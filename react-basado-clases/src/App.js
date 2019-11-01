@@ -14,14 +14,14 @@ class App extends Component {
       }
     ]
   }
-  switchNameHandle = () =>{
+  switchNameHandle = (newName) =>{
     this.setState({
       persons:[
         {
           name:"Erick Fernando", age:25
         },
         {
-          name:"Paula Londra", age:23
+          name:newName, age:23
         }
       ]
     })
@@ -30,9 +30,19 @@ class App extends Component {
     return (
       <div className="App">
         <h2>Hello World React</h2>
-        <button onClick={this.switchNameHandle} >Switch Name</button>
-        <Person name={this.state.persons[0].name} age={this.state.persons[0].age}></Person>
-        <Person name={this.state.persons[1].name} age={this.state.persons[1].age}>Hey hey hey</Person>
+        {/* Cuando recibe parametos podemos usar una funcion anonima para que ejecute nuestro codigo al dar click */}
+        <button onClick={()=> this.switchNameHandle('Paula!!')} >Switch Name</button>
+        <Person 
+        name={this.state.persons[0].name} 
+        age={this.state.persons[0].age}>
+
+        </Person>
+        {/* Podemos usar bind para mandar llamar la funcion pero debemos pasar this, seguido de los parametros */}
+        <Person 
+        name={this.state.persons[1].name} 
+        age={this.state.persons[1].age}
+        click={this.switchNameHandle.bind(this,"Pau")}
+        >Hey hey hey</Person>
 
       </div>
     );
