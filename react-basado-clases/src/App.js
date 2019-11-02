@@ -14,6 +14,7 @@ class App extends Component {
         name:"Paula", age:22
       }
     ],
+    showPerson:false,
     user:"Fernando"
   }
   switchNameHandle = (newName) =>{
@@ -38,6 +39,10 @@ class App extends Component {
       ]
     })
   }
+  togglePersonHandler = ()=>{
+    let doesShowPerson = this.state.showPerson;
+    this.setState({showPerson:!doesShowPerson});
+  }
 
   userChangedHandler = (event) =>{
     this.setState({
@@ -53,34 +58,43 @@ class App extends Component {
       cursor:'pointer'
 
     }
+    let persons = null;
+
+    if (this.state.showPerson){
+      persons = (
+        <div>
+            <Person 
+            name={this.state.persons[0].name} 
+            age={this.state.persons[0].age}>
+            
+            </Person>
+            {/* Podemos usar bind para mandar llamar la funcion pero debemos pasar this, seguido de los parametros */}
+            <Person 
+            name={this.state.persons[1].name} 
+            age={this.state.persons[1].age}
+            changed={this.nameChangedHandler}
+            click={this.switchNameHandle.bind(this,"Pau")}
+            >Hey hey hey</Person>
+            <UserInput 
+            changed = {this.userChangedHandler}
+            //changed ={this.userChangedHandler.bind()}
+            user = {this.state.user}
+            />
+            <UserOutput
+            user={this.state.user}
+            />
+            <UserOutput
+            />
+          </div>
+      );
+    }
     return (
       <div className="App">
         <h2>Hello World React</h2>
         {/* Cuando recibe parametos podemos usar una funcion anonima para que ejecute nuestro codigo al dar click */}
         <button style={style}
-         onClick={()=> this.switchNameHandle('Paula!!')} >Switch Name</button>
-        <Person 
-        name={this.state.persons[0].name} 
-        age={this.state.persons[0].age}>
-
-        </Person>
-        {/* Podemos usar bind para mandar llamar la funcion pero debemos pasar this, seguido de los parametros */}
-        <Person 
-        name={this.state.persons[1].name} 
-        age={this.state.persons[1].age}
-        changed={this.nameChangedHandler}
-        click={this.switchNameHandle.bind(this,"Pau")}
-        >Hey hey hey</Person>
-        <UserInput 
-        changed = {this.userChangedHandler}
-        //changed ={this.userChangedHandler.bind()}
-        user = {this.state.user}
-        />
-        <UserOutput
-        user={this.state.user}
-        />
-        <UserOutput
-        />
+         onClick={this.togglePersonHandler} >toggle</button>
+        {persons}
       </div>
     );
   }
