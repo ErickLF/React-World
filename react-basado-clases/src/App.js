@@ -8,10 +8,10 @@ class App extends Component {
   state = {
     persons:[
       {
-        name:"Erick", age:24
+        id:"xfg2", name:"Erick Fernando", age:25
       },
       {
-        name:"Paula", age:22
+        id:"2345", name:"Pau", age:23
       }
     ],
     showPerson:false,
@@ -30,14 +30,24 @@ class App extends Component {
     })
   }
 
-  nameChangedHandler = (event) =>{
-    //event.target.value obtiene el valor del input
-    this.setState({
-      persons:[
-        {name:"Erick", age:25},
-        {name:event.target.value, age:22}
-      ]
+  nameChangedHandler = (event, id) =>{
+    //obtenemos la persona con ese id
+    const personIndex = this.state.persons.findIndex(p => {
+      return p.id ===id
     })
+    
+    //hacemos una copia de la persona
+    const person = {...this.state.persons[personIndex]}
+
+    //actualizamos el valor de la persona
+    person.name = event.target.value;
+    //hacemos una copia del estado
+    const persons = [...this.state.persons]
+    //asignamos el valor
+    persons[personIndex] = person;
+
+    //event.target.value obtiene el valor del input
+    this.setState({persons:persons})
   }
   togglePersonHandler = ()=>{
     let doesShowPerson = this.state.showPerson;
@@ -49,6 +59,7 @@ class App extends Component {
       user:event.target.value
     })
   }
+
   deletePersonHandler = (indexPerson)=>{
     //const persons = this.state.persons;
     const persons = [...this.state.persons]//hacemos una copia para despues actualizar el estado
@@ -71,6 +82,7 @@ class App extends Component {
         <div>
           {this.state.persons.map( (person,index) =>{
             return <Person 
+              changed = {(event) => this.nameChangedHandler(event, person.id)}
               click={()=>this.deletePersonHandler(index)}
               name={person.name} 
               age={person.age}
