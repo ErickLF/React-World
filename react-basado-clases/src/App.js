@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Person from './Person/Person';
-import UserInput from './UserInput/UserInput';
-import UserOutput from './UserOutput/UserOutput';
-
+import Radium, {StyleRoot} from 'radium';
 class App extends Component {
   state = {
     persons:[
@@ -68,11 +66,16 @@ class App extends Component {
   }
   render() {
     const style = {
-      backgroundColor : 'white',
+      backgroundColor : 'green',
+      color:'white',
       font: 'inherit',
       border: '1px solid green',
       padding:'10px',
-      cursor:'pointer'
+      cursor:'pointer',
+      ':hover':{
+        backgroundColor:"lightgreen",
+        color:'black'
+      }
 
     }
     let persons = null;
@@ -100,17 +103,32 @@ class App extends Component {
             */}
           </div>
       );
+      style.backgroundColor='red';
+      style[':hover']={
+        backgroundColor:"salmon",
+        color:'black'
+      }
     }
+    let clases = []
+    if (this.state.persons.length <2){
+      clases.push('red')
+    }
+    if (this.state.persons.length <1){
+      clases.push('bold')
+    }
+
     return (
-      <div className="App">
-        <h2>Hello World React</h2>
-        {/* Cuando recibe parametos podemos usar una funcion anonima para que ejecute nuestro codigo al dar click */}
-        <button style={style}
-         onClick={this.togglePersonHandler} >toggle</button>
-        {persons}
-      </div>
+      <StyleRoot>
+        <div className="App">
+          <p className={clases.join(" ")} >Hello World React</p>
+          {/* Cuando recibe parametos podemos usar una funcion anonima para que ejecute nuestro codigo al dar click */}
+          <button style={style}
+          onClick={this.togglePersonHandler} >toggle</button>
+          {persons}
+        </div>
+      </StyleRoot>
     );
   }
 }
 
-export default App;
+export default Radium(App);
